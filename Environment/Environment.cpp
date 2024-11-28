@@ -64,6 +64,12 @@ double Environment::SolarIrradianceOnHorizontalSurface(int day, double hour, dou
     double hourAngle = Environment::SolarHourAngle(hour);
 
     double directSolarIncidenceCos = Environment::DirectSolarIncidenceCos(sunDeclination, hourAngle);
+
+    // If the sun is below the horizon, return 0 immediately (there is no solar irradiance)
+    if (directSolarIncidenceCos <= 0) {
+        return 0.0;
+    }
+
     double transparencyCoef = AtmosphericTransparency(directSolarIncidenceCos);
     double difCoef = DiffusionCoef(transparencyCoef);
     double reflCoef = ReflectionCoef(transparencyCoef);
