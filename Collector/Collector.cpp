@@ -1,7 +1,7 @@
 #include "Collector.hpp"
 
 #include "math.h"
-#include "Utils.hpp"
+#include "../Utils/Utils.hpp"
 
 double Collector::SolarIncidenceCos(double lat, double declination, double hourAngle) {
     double latMinusInclRad = DegreesToRadians(lat - _incl); 
@@ -16,3 +16,11 @@ double Collector::SolarIncidenceCos(double lat, double declination, double hourA
     return leftPart + rightPart; 
 }
 
+double Collector::UsefulEnergy(double solarIrradiance, double envTemp) {
+    //equation:
+    //energy = heat transfer factor * Area * [irradiance * transmittance - heat loss coef * (T col - T env)] 
+    double leftPart = _heatTransferFactor * _area;
+    double rightPart = solarIrradiance * _absorptanceTransmittance - _heatLossCoef * (_temp - envTemp);
+
+    return std::max(0.0, leftPart * rightPart);
+}
