@@ -22,6 +22,11 @@ debug: $(SRC)
 # Rule to generate graphs using gnuplot
 graphs: power_balance_by_hour.pdf hourly_energy_ratio_by_tilt.pdf seasonal_energy_ratio_by_tilt.pdf
 
+# Rule to run the program with default parameters
+run: $(TARGET)
+	./$(TARGET) --col_i 60 --dStart 1 --latitude 49 --start_hour 12 --h 0.237 --env_avg_tmp -1 --env_diff_tmp 4 --area 10.8 --trans_eff 0.9
+	$(MAKE) graphs
+
 # Rule to generate power_balance_by_hour.pdf
 power_balance_by_hour.pdf: Plots/power_balance_by_hour.plt PlotData/power_balance_by_hour.dat
 	gnuplot Plots/power_balance_by_hour.plt
